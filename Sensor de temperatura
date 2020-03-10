@@ -1,0 +1,63 @@
+float tempC[7]; // Variable para almacenar el valor obtenido del sensor (0 a 1023)
+int pinLM35 = 0;
+float tempG=0;// Variable del pin de entrada del sensor (A0)
+ float tempProm=0;
+double cont=0;
+int a=0;
+int b=0;
+int cont2=0;
+int cont3=0;
+int prom;
+void setup() {
+  // Configuramos el puerto serial a 9600 bps
+  Serial.begin(9600);
+ 
+}
+ 
+void loop() {
+  //cont3=0;
+  for(int t=0;t<=14;t++){
+   // cont3=cont3+1;
+    for(int j=0; j<=6; j++)
+    {
+      
+      tempC[j] = analogRead(pinLM35); 
+       //Calculamos la temperatura con la fórmula
+       tempC[j] = (5.0 * tempC[j] * 100.0)/1024.0;     
+       //cont=cont+tempC[j];
+       //tempProm=cont/j+1;
+       
+    }
+    for(int i=0; i<=6; i++)
+    {
+      if(tempC[i]>tempC[i+1])
+      {
+        b=tempC[i];
+        tempC[i]=tempC[i+1];
+        tempC[i+1]=b;
+          
+      }
+      
+    }
+    Serial.print("La temperatura actual es:");
+        Serial.println(tempC[3]);
+        cont2=cont2+tempC[3];
+        Serial.println(cont2);
+        prom=cont2/(t+1);
+        Serial.print("La temperatura promedio es: ");
+        Serial.println(prom);
+        Serial.println(t+1);
+        delay(6000);
+  }
+
+    
+    
+
+  
+  
+  
+ 
+  
+  // Esperamos un tiempo para repetir el loop
+  delay(6000);
+}
